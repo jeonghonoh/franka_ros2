@@ -28,6 +28,7 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 add_library(
         ${PROJECT_NAME}
@@ -45,7 +46,8 @@ add_library(
         src/joint_velocity_example_controller.cpp
         src/model_example_controller.cpp
         src/motion_generator.cpp
-        src/move_to_start_example_controller.cpp)
+        src/move_to_start_example_controller.cpp
+        src/trajectory_tracking_example_controller.cpp)
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC
@@ -65,6 +67,7 @@ ament_target_dependencies(
         rclcpp
         rclcpp_lifecycle
         std_srvs
+        yaml-cpp
 )
 
 pluginlib_export_plugin_description_file(
@@ -124,6 +127,8 @@ if(BUILD_TESTING)
     ament_add_gmock(${PROJECT_NAME}_gravity_test test/test_gravity_compensation_example.cpp)
     target_include_directories(${PROJECT_NAME}_gravity_test PRIVATE include)
     target_link_libraries(${PROJECT_NAME}_gravity_test ${PROJECT_NAME})
+    target_link_libraries(${PROJECT_NAME} yaml-cpp)
+
 
     ament_add_gmock(${PROJECT_NAME}_move_to_start_test test/test_move_to_start_example_controller.cpp)
     target_include_directories(${PROJECT_NAME}_move_to_start_test PRIVATE include)

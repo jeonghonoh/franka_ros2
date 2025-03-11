@@ -51,6 +51,9 @@ rightarm:
       franka_robot_state_broadcaster:
         type: franka_robot_state_broadcaster/FrankaRobotStateBroadcaster
 
+      trajectory_tracking_controller:
+        type: franka_example_controllers/TrajectoryTrackingExampleController
+
   joint_impedance_with_ik_example_controller:
     ros__parameters:
       k_gains:
@@ -108,6 +111,24 @@ rightarm:
         - 10.0
         - 5.
 
+  trajectory_tracking_controller:
+    ros__parameters:
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
 
 
 leftarm:
@@ -163,6 +184,9 @@ leftarm:
       franka_robot_state_broadcaster:
         type: franka_robot_state_broadcaster/FrankaRobotStateBroadcaster
 
+      trajectory_tracking_controller:
+        type: franka_example_controllers/TrajectoryTrackingExampleController
+
   joint_impedance_with_ik_example_controller:
     ros__parameters:
       k_gains:
@@ -202,6 +226,25 @@ leftarm:
         - 0.5
 
   move_to_start_example_controller:
+    ros__parameters:
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+
+  trajectory_tracking_controller:
     ros__parameters:
       k_gains:
         - 600.0
