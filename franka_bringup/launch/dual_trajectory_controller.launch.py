@@ -108,7 +108,7 @@ def generate_launch_description():
                         executable='spawner',
                         arguments=['trajectory_tracking_controller'],
                         output='screen',
-                        parameters=[{'trajectory_file': "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_03.yaml"}],
+                        parameters=[{"trajectory_file": "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_03.yaml"}],
                     ),
                 ]
             ),
@@ -120,7 +120,7 @@ def generate_launch_description():
                         executable='spawner',
                         arguments=['trajectory_tracking_controller'],
                         output='screen',
-                        parameters=[{'trajectory_file': "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_02.yaml"}],
+                        parameters=[{"trajectory_file": "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_02.yaml"}],
                     ),
                 ]
             ),
