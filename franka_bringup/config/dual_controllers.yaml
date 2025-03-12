@@ -51,8 +51,11 @@ rightarm:
       franka_robot_state_broadcaster:
         type: franka_robot_state_broadcaster/FrankaRobotStateBroadcaster
 
-      trajectory_tracking_controller:
-        type: franka_example_controllers/TrajectoryTrackingExampleController
+      cartesian_trajectory_tracking_controller:
+        type: franka_example_controllers/CartesianTrajectoryTrackingExampleController
+      
+      joint_trajectory_tracking_controller:
+        type: franka_example_controllers/JointTrajectoryTrackingExampleController
 
   joint_impedance_with_ik_example_controller:
     ros__parameters:
@@ -111,9 +114,29 @@ rightarm:
         - 10.0
         - 5.
 
-  trajectory_tracking_controller:
+  cartesian_trajectory_tracking_controller:
     ros__parameters:
-      trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_02.yaml"
+      trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/cartesian_trajectory_02.yaml"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+  
+  joint_trajectory_tracking_controller:
+    ros__parameters:
+      trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/joint_trajectory_02.yaml"
       k_gains:
         - 600.0
         - 600.0
@@ -185,8 +208,11 @@ leftarm:
       franka_robot_state_broadcaster:
         type: franka_robot_state_broadcaster/FrankaRobotStateBroadcaster
 
-      trajectory_tracking_controller:
-        type: franka_example_controllers/TrajectoryTrackingExampleController
+      cartesian_trajectory_tracking_controller:
+        type: franka_example_controllers/CartesianTrajectoryTrackingExampleController
+      
+      joint_trajectory_tracking_controller:
+        type: franka_example_controllers/JointTrajectoryTrackingExampleController
 
   joint_impedance_with_ik_example_controller:
     ros__parameters:
@@ -245,9 +271,30 @@ leftarm:
         - 10.0
         - 5.
 
-  trajectory_tracking_controller:
+  cartesian_trajectory_tracking_controller:
     ros__parameters:
-      trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_03.yaml"
+      trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/cartesian_trajectory_02.yaml" #tmp backup
+      # trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/cartesian_trajectory_03.yaml"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+
+  joint_trajectory_tracking_controller:
+    ros__parameters:
+      trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/joint_trajectory_03.yaml"
       k_gains:
         - 600.0
         - 600.0

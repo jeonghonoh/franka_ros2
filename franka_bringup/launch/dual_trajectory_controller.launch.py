@@ -92,7 +92,8 @@ def generate_launch_description():
                     Node(
                         package='controller_manager',
                         executable='spawner',
-                        arguments=['trajectory_tracking_controller'],
+                        # arguments=['cartesian_trajectory_tracking_controller'],
+                        arguments=['joint_trajectory_tracking_controller'],
                         output='screen',
                         # if you want to pass the trajectory file as a parameter,
                         # it is recommended to pass it through controller.yaml file
@@ -107,7 +108,8 @@ def generate_launch_description():
                     Node(
                         package='controller_manager',
                         executable='spawner',
-                        arguments=['trajectory_tracking_controller'],
+                        # arguments=['cartesian_trajectory_tracking_controller'],
+                        arguments=['joint_trajectory_tracking_controller'],
                         output='screen',
                     ),
                 ]

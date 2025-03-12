@@ -47,7 +47,8 @@ add_library(
         src/model_example_controller.cpp
         src/motion_generator.cpp
         src/move_to_start_example_controller.cpp
-        src/trajectory_tracking_example_controller.cpp)
+        src/cartesian_trajectory_tracking_example_controller.cpp
+        src/joint_trajectory_tracking_example_controller.cpp)
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC

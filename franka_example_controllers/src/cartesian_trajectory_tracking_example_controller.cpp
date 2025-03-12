@@ -1,4 +1,4 @@
-#include <franka_example_controllers/trajectory_tracking_example_controller.hpp>
+#include <franka_example_controllers/cartesian_trajectory_tracking_example_controller.hpp>
 #include <franka_example_controllers/default_robot_behavior_utils.hpp>
 #include <pluginlib/class_list_macros.hpp>
 #include <cassert>
@@ -11,7 +11,7 @@
 namespace franka_example_controllers {
 
 controller_interface::InterfaceConfiguration
-TrajectoryTrackingExampleController::command_interface_configuration() const {
+CartesianTrajectoryTrackingExampleController::command_interface_configuration() const {
   controller_interface::InterfaceConfiguration config;
   config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
   // Use the command interface names from the FrankaCartesianPoseInterface.
@@ -20,7 +20,7 @@ TrajectoryTrackingExampleController::command_interface_configuration() const {
 }
 
 controller_interface::InterfaceConfiguration
-TrajectoryTrackingExampleController::state_interface_configuration() const {
+CartesianTrajectoryTrackingExampleController::state_interface_configuration() const {
   controller_interface::InterfaceConfiguration config;
   config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
   config.names = franka_cartesian_pose_->get_state_interface_names();
@@ -28,8 +28,8 @@ TrajectoryTrackingExampleController::state_interface_configuration() const {
   return config;
 }
 
-TrajectoryTrackingExampleController::CallbackReturn
-TrajectoryTrackingExampleController::on_init() {
+CartesianTrajectoryTrackingExampleController::CallbackReturn
+CartesianTrajectoryTrackingExampleController::on_init() {
   try {
     auto_declare<std::string>("arm_id", arm_id_);
     auto_declare<std::string>("trajectory_file", "");
@@ -40,8 +40,8 @@ TrajectoryTrackingExampleController::on_init() {
   return CallbackReturn::SUCCESS;
 }
 
-TrajectoryTrackingExampleController::CallbackReturn
-TrajectoryTrackingExampleController::on_configure(const rclcpp_lifecycle::State & /*previous_state*/) {
+CartesianTrajectoryTrackingExampleController::CallbackReturn
+CartesianTrajectoryTrackingExampleController::on_configure(const rclcpp_lifecycle::State & /*previous_state*/) {
   arm_id_ = get_node()->get_parameter("arm_id").as_string();
   trajectory_file_ = get_node()->get_parameter("trajectory_file").as_string();
 
@@ -72,8 +72,8 @@ TrajectoryTrackingExampleController::on_configure(const rclcpp_lifecycle::State 
   return CallbackReturn::SUCCESS;
 }
 
-TrajectoryTrackingExampleController::CallbackReturn
-TrajectoryTrackingExampleController::on_activate(const rclcpp_lifecycle::State & /*previous_state*/) {
+CartesianTrajectoryTrackingExampleController::CallbackReturn
+CartesianTrajectoryTrackingExampleController::on_activate(const rclcpp_lifecycle::State & /*previous_state*/) {
   initialization_flag_ = true;
   elapsed_time_ = 0.0;
   // Loan the command and state interfaces from the Cartesian Pose Interface.
@@ -98,7 +98,7 @@ TrajectoryTrackingExampleController::on_activate(const rclcpp_lifecycle::State &
 
   return CallbackReturn::SUCCESS;
 }
-// TrajectoryTrackingExampleController::on_activate(const rclcpp_lifecycle::State & /*previous_state*/) {
+// CartesianTrajectoryTrackingExampleController::on_activate(const rclcpp_lifecycle::State & /*previous_state*/) {
 //   initialization_flag_ = true;
 //   elapsed_time_ = 0.0;
 //   // Loan the command and state interfaces from the Cartesian Pose Interface.
@@ -108,13 +108,13 @@ TrajectoryTrackingExampleController::on_activate(const rclcpp_lifecycle::State &
 // }
 
 controller_interface::CallbackReturn
-TrajectoryTrackingExampleController::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/) {
+CartesianTrajectoryTrackingExampleController::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/) {
   franka_cartesian_pose_->release_interfaces();
   return CallbackReturn::SUCCESS;
 }
 
 controller_interface::return_type
-TrajectoryTrackingExampleController::update(const rclcpp::Time & /*time*/,
+CartesianTrajectoryTrackingExampleController::update(const rclcpp::Time & /*time*/,
                                               const rclcpp::Duration & /*period*/) {
   if (initialization_flag_) {
     std::tie(current_orientation_, current_position_) =
@@ -140,7 +140,7 @@ TrajectoryTrackingExampleController::update(const rclcpp::Time & /*time*/,
   }
 }
 
-bool TrajectoryTrackingExampleController::loadTrajectoryFromFile(const std::string &file_path) {
+bool CartesianTrajectoryTrackingExampleController::loadTrajectoryFromFile(const std::string &file_path) {
   try {
     YAML::Node config = YAML::LoadFile(file_path);
     if (!config["trajectory"]) {
@@ -168,7 +168,7 @@ bool TrajectoryTrackingExampleController::loadTrajectoryFromFile(const std::stri
   return true;
 }
 
-void TrajectoryTrackingExampleController::getDesiredPose(double t, Eigen::Quaterniond &desired_orientation, Eigen::Vector3d &desired_position) {
+void CartesianTrajectoryTrackingExampleController::getDesiredPose(double t, Eigen::Quaterniond &desired_orientation, Eigen::Vector3d &desired_position) {
   if (trajectory_.empty()) {
     desired_orientation = current_orientation_;
     desired_position = current_position_;
@@ -207,5 +207,5 @@ void TrajectoryTrackingExampleController::getDesiredPose(double t, Eigen::Quater
 
 }  // namespace franka_example_controllers
 
-PLUGINLIB_EXPORT_CLASS(franka_example_controllers::TrajectoryTrackingExampleController,
+PLUGINLIB_EXPORT_CLASS(franka_example_controllers::CartesianTrajectoryTrackingExampleController,
                        controller_interface::ControllerInterface)

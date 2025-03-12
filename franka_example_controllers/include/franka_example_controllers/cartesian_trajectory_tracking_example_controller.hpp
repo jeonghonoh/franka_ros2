@@ -24,7 +24,7 @@ struct PoseCheckpoint {
   Eigen::Quaterniond orientation;
 };
 
-class TrajectoryTrackingExampleController : public controller_interface::ControllerInterface
+class CartesianTrajectoryTrackingExampleController : public controller_interface::ControllerInterface
 {
 public:
   using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
