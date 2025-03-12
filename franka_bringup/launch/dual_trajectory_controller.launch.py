@@ -15,8 +15,6 @@ def generate_launch_description():
     use_fake_hardware_parameter_name = 'use_fake_hardware'
     fake_sensor_commands_parameter_name = 'fake_sensor_commands'
     use_rviz_parameter_name = 'use_rviz'
-    trajectory_file_parameter_name_02 = 'trajectory_file_02'
-    trajectory_file_parameter_name_03 = 'trajectory_file_03'
 
     robot_ip_02 = LaunchConfiguration(robot_ip_parameter_name_02)
     robot_ip_03 = LaunchConfiguration(robot_ip_parameter_name_03)    
@@ -26,8 +24,6 @@ def generate_launch_description():
     fake_sensor_commands = LaunchConfiguration(
         fake_sensor_commands_parameter_name)
     use_rviz = LaunchConfiguration(use_rviz_parameter_name)
-    trajectory_02 = LaunchConfiguration(trajectory_file_parameter_name_02)
-    trajectory_03 = LaunchConfiguration(trajectory_file_parameter_name_03)
 
     return LaunchDescription(
         [
@@ -71,16 +67,6 @@ def generate_launch_description():
                     'without an end-effector.'
                 ),
             ),
-            DeclareLaunchArgument(
-                trajectory_file_parameter_name_02,
-                default_value='/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_02.yaml',
-                description='Path to the trajectory_02 YAML file.'
-            ),
-            DeclareLaunchArgument(
-                trajectory_file_parameter_name_03,
-                default_value='/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_03.yaml',
-                description='Path to the trajectory_03 YAML file.'
-            ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     [
@@ -108,7 +94,10 @@ def generate_launch_description():
                         executable='spawner',
                         arguments=['trajectory_tracking_controller'],
                         output='screen',
-                        parameters=[{"trajectory_file": "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_03.yaml"}],
+                        # if you want to pass the trajectory file as a parameter,
+                        # it is recommended to pass it through controller.yaml file
+                        # parameters=[{'trajectory_file': trajectory_03,
+                        #              'arm_id': arm_id}],
                     ),
                 ]
             ),
@@ -120,7 +109,6 @@ def generate_launch_description():
                         executable='spawner',
                         arguments=['trajectory_tracking_controller'],
                         output='screen',
-                        parameters=[{"trajectory_file": "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_02.yaml"}],
                     ),
                 ]
             ),

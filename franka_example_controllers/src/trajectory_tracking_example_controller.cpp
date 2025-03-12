@@ -32,7 +32,7 @@ TrajectoryTrackingExampleController::CallbackReturn
 TrajectoryTrackingExampleController::on_init() {
   try {
     auto_declare<std::string>("arm_id", arm_id_);
-    auto_declare<std::string>("trajectory_file", "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_02.yaml");  // YAML file path for trajectory, default is 02
+    auto_declare<std::string>("trajectory_file", "");
   } catch (const std::exception &e) {
     RCLCPP_ERROR(get_node()->get_logger(), "Exception during init: %s", e.what());
     return CallbackReturn::ERROR;
@@ -43,10 +43,7 @@ TrajectoryTrackingExampleController::on_init() {
 TrajectoryTrackingExampleController::CallbackReturn
 TrajectoryTrackingExampleController::on_configure(const rclcpp_lifecycle::State & /*previous_state*/) {
   arm_id_ = get_node()->get_parameter("arm_id").as_string();
-  // trajectory_file_ = "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_02.yaml";
   trajectory_file_ = get_node()->get_parameter("trajectory_file").as_string();
-  std::cout << "Arm ID: " << arm_id_ << std::endl;
-  std::cout << "Trajectory file: " << trajectory_file_ << std::endl;
 
   // Set default collision behavior (similar to CartesianPoseExampleController)
   auto client = get_node()->create_client<franka_msgs::srv::SetFullCollisionBehavior>(

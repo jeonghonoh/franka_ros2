@@ -113,6 +113,7 @@ rightarm:
 
   trajectory_tracking_controller:
     ros__parameters:
+      trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_02.yaml"
       k_gains:
         - 600.0
         - 600.0
@@ -246,6 +247,7 @@ leftarm:
 
   trajectory_tracking_controller:
     ros__parameters:
+      trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/trajectory_03.yaml"
       k_gains:
         - 600.0
         - 600.0
