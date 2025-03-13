@@ -38,6 +38,7 @@ controller_interface::InterfaceConfiguration
 MoveToStartExampleController::state_interface_configuration() const {
   controller_interface::InterfaceConfiguration config;
   config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
+  // std::cout << "state_interface_configuration: " << arm_id_ << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
   for (int i = 1; i <= num_joints; ++i) {
     config.names.push_back(arm_id_ + "_joint" + std::to_string(i) + "/position");
     config.names.push_back(arm_id_ + "_joint" + std::to_string(i) + "/velocity");

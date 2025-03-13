@@ -1,3 +1,4 @@
+// joint_trajectory_tracking_example_controller.hpp
 // Copyright (c) 2023 Franka Robotics GmbH
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,7 @@
 
 #pragma once
 
-#include <array>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -22,59 +23,62 @@
 #include <controller_interface/controller_interface.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_lifecycle/lifecycle_node.hpp>
+#include <yaml-cpp/yaml.h>
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
 namespace franka_example_controllers {
 
-/**
- * @brief Structure to store one trajectory point.
- *
- * For joint trajectory, the YAML file key is "pose" which must contain exactly 7 joint values.
- */
-struct TrajectoryPoint {
+// 7-DOF vector type.
+using Vector7d = Eigen::Matrix<double, 7, 1>;
+
+// Structure to hold a trajectory point.
+struct JointTrajectoryPoint {
   double time_sec;
-  std::array<double, 7> joints;
+  Vector7d q;
 };
 
-/**
- * @brief The joint trajectory tracking example controller.
- *
- * This controller loads a trajectory from a YAML file (with key "trajectory") where each point uses the key "pose"
- * to specify 7 joint values. It then interpolates (using cubic smoothstep) the desired joint positions based on elapsed time.
- */
+/// JointTrajectoryTrackingExampleController
+/// This controller loads a joint trajectory
+/// and commands the robot’s joints to follow the trajectory using PD control.
 class JointTrajectoryTrackingExampleController : public controller_interface::ControllerInterface {
  public:
+  JointTrajectoryTrackingExampleController();
+
   [[nodiscard]] controller_interface::InterfaceConfiguration command_interface_configuration() const override;
   [[nodiscard]] controller_interface::InterfaceConfiguration state_interface_configuration() const override;
-  controller_interface::return_type update(const rclcpp::Time & time,
-                                           const rclcpp::Duration & period) override;
+
+  controller_interface::return_type update(const rclcpp::Time &time, const rclcpp::Duration &period) override;
+
   CallbackReturn on_init() override;
-  CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
-  CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;
-  CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
+  CallbackReturn on_configure(const rclcpp_lifecycle::State &previous_state) override;
+  CallbackReturn on_activate(const rclcpp_lifecycle::State &previous_state) override;
+  CallbackReturn on_deactivate(const rclcpp_lifecycle::State &previous_state) override;
 
  private:
-  // Load trajectory from YAML file.
-  bool loadTrajectoryFromFile(const std::string & file_path);
-  // Compute desired joint positions at time t using cubic smoothstep interpolation.
-  void getDesiredJointPositions(double t, Eigen::VectorXd & desired_joint_positions);
-
+  // Parameters
   std::string arm_id_;
-  bool is_gazebo_{false};
-  std::string robot_description_;
-  const int num_joints = 7;
-  std::array<double, 7> initial_q_{0, 0, 0, 0, 0, 0, 0};
-  double elapsed_time_ = 0.0;
-  double initial_robot_time_ = 0.0;
-  double robot_time_ = 0.0;
-  double trajectory_period_ = 0.001;
-  bool initialization_flag_{true};
-
-  // Trajectory file parameter.
   std::string trajectory_file_;
-  // Vector of trajectory points.
-  std::vector<TrajectoryPoint> trajectory_;
+  const int num_joints = 7;
+
+  // Joint state vectors
+  Vector7d q_;           // current joint positions
+  Vector7d dq_;          // current joint velocities
+  Vector7d dq_filtered_; // filtered velocities
+  Vector7d k_gains_;     // PD gains
+  Vector7d d_gains_;
+
+  // Timing
+  rclcpp::Time start_time_;
+  bool initialization_flag_;
+
+  // Loaded trajectory.
+  std::vector<JointTrajectoryPoint> trajectory_;
+
+  // Helper functions
+  bool loadTrajectoryFromFile(const std::string &file_path);
+  std::pair<Vector7d, bool> getDesiredJointPositions(double t) const;
+  void updateJointStates();
 };
 
 }  // namespace franka_example_controllers
