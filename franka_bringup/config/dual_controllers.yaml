@@ -69,6 +69,9 @@ rightarm:
       simple_cartesian_velocity_controller:
         type: franka_example_controllers/SimpleCartesianVelocityController
 
+      combined_joint_cartesian_controller:
+        type: franka_example_controllers/CombinedJointCartesianController
+
   joint_impedance_with_ik_example_controller:
     ros__parameters:
       k_gains:
@@ -252,6 +255,14 @@ rightarm:
         - 10.0
         - 5.
 
+  combined_joint_cartesian_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      joint_command_topic: "/rightarm/joint_position_command"
+      k_gains: [600.0, 600.0, 600.0, 600.0, 250.0, 150.0, 50.0]
+      d_gains: [50.0, 50.0, 50.0, 50.0, 30.0, 25.0, 15.0]
+      cartesian_command_topic: "/rightarm/cartesian_pose_command"
+      p_gain: 0.5
 
 leftarm:
   controller_manager:
@@ -323,6 +334,9 @@ leftarm:
 
       simple_cartesian_velocity_controller:
         type: franka_example_controllers/SimpleCartesianVelocityController
+
+      combined_joint_cartesian_controller:
+        type: franka_example_controllers/CombinedJointCartesianController
 
   joint_impedance_with_ik_example_controller:
     ros__parameters:
@@ -507,3 +521,12 @@ leftarm:
         - 10.0
         - 10.0
         - 5.
+
+  combined_joint_cartesian_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      joint_command_topic: "/leftarm/joint_position_command"
+      k_gains: [600.0, 600.0, 600.0, 600.0, 250.0, 150.0, 50.0]
+      d_gains: [50.0, 50.0, 50.0, 50.0, 30.0, 25.0, 15.0]
+      cartesian_command_topic: "/leftarm/cartesian_pose_command"
+      p_gain: 0.5

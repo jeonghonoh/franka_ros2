@@ -113,4 +113,10 @@
             A simple controller that moves the robot between two waypoints in a step-like manner.
         </description>
     </class>
+    <class name="franka_example_controllers/CombinedJointCartesianController"
+           type="franka_example_controllers::CombinedJointCartesianController" base_class_type="controller_interface::ControllerInterface">
+        <description>
+            A simple controller that moves the robot between two waypoints in a step-like manner.
+        </description>
+    </class>
 </library>
