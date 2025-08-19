@@ -56,6 +56,18 @@ rightarm:
       
       joint_trajectory_tracking_controller:
         type: franka_example_controllers/JointTrajectoryTrackingExampleController
+      
+      dual_waypoint_step_controller:
+        type: franka_example_controllers/DualWaypointStepController
+      
+      simple_joint_position_controller:
+        type: franka_example_controllers/SimpleJointPositionController
+      
+      simple_cartesian_position_controller:
+        type: franka_example_controllers/SimpleCartesianPositionController
+
+      simple_cartesian_velocity_controller:
+        type: franka_example_controllers/SimpleCartesianVelocityController
 
   joint_impedance_with_ik_example_controller:
     ros__parameters:
@@ -154,6 +166,91 @@ rightarm:
         - 10.0
         - 10.0
         - 5.
+  
+  dual_waypoint_step_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      waypoint_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/joint_states.yaml"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+  
+  simple_joint_position_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      joint_command_topic: "/rightarm/joint_position_command"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+  
+  simple_cartesian_position_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      cartesian_command_topic: "/rightarm/cartesian_pose_command"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+  
+  simple_cartesian_velocity_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      p_gain: 0.5
+      cartesian_command_topic: "/rightarm/cartesian_pose_command"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
 
 
 leftarm:
@@ -214,6 +311,18 @@ leftarm:
       
       joint_trajectory_tracking_controller:
         type: franka_example_controllers/JointTrajectoryTrackingExampleController
+      
+      dual_waypoint_step_controller:
+        type: franka_example_controllers/DualWaypointStepController
+
+      simple_joint_position_controller:
+        type: franka_example_controllers/SimpleJointPositionController
+
+      simple_cartesian_position_controller:
+        type: franka_example_controllers/SimpleCartesianPositionController
+
+      simple_cartesian_velocity_controller:
+        type: franka_example_controllers/SimpleCartesianVelocityController
 
   joint_impedance_with_ik_example_controller:
     ros__parameters:
@@ -297,6 +406,91 @@ leftarm:
     ros__parameters:
       arm_id: "fr3"
       trajectory_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/joint_trajectory_03.yaml"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+  
+  dual_waypoint_step_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      waypoint_file: "/home/rpm-dualarm/franka_ros2_ws/src/franka_bringup/config/joint_states.yaml"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+  
+  simple_joint_position_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      joint_command_topic: "/leftarm/joint_position_command"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+
+  simple_cartesian_position_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      cartesian_command_topic: "/leftarm/cartesian_pose_command"
+      k_gains:
+        - 600.0
+        - 600.0
+        - 600.0
+        - 600.0
+        - 250.0
+        - 150.0
+        - 50.0
+      d_gains:
+        - 30.0
+        - 30.0
+        - 30.0
+        - 30.0
+        - 10.0
+        - 10.0
+        - 5.
+  
+  simple_cartesian_velocity_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      p_gain: 0.5
+      cartesian_command_topic: "/leftarm/cartesian_pose_command"
       k_gains:
         - 600.0
         - 600.0

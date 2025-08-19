@@ -26,6 +26,7 @@ find_package(pinocchio REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
+find_package(realtime_tools REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(yaml-cpp REQUIRED)
@@ -48,7 +49,12 @@ add_library(
         src/motion_generator.cpp
         src/move_to_start_example_controller.cpp
         src/cartesian_trajectory_tracking_example_controller.cpp
-        src/joint_trajectory_tracking_example_controller.cpp)
+        src/joint_trajectory_tracking_example_controller.cpp
+        src/dual_waypoint_step_controller.cpp
+        src/simple_joint_position_controller.cpp
+        src/simple_cartesian_position_controller.cpp
+        src/simple_cartesian_velocity_controller.cpp
+        )
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC
@@ -67,6 +73,7 @@ ament_target_dependencies(
         pluginlib
         rclcpp
         rclcpp_lifecycle
+        realtime_tools
         std_srvs
         yaml-cpp
 )

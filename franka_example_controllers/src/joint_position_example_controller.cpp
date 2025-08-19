@@ -72,7 +72,7 @@ controller_interface::return_type JointPositionExampleController::update(
     }
   }
 
-  double delta_angle = M_PI / 16 * (1 - std::cos(M_PI / 5.0 * elapsed_time_)) * 0.2;
+  double delta_angle = M_PI / 1 * (1 - std::cos(M_PI / 5.0 * elapsed_time_)) * 0.2;
 
   for (int i = 0; i < num_joints; ++i) {
     if (i == 4) {

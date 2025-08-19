@@ -89,4 +89,28 @@
             A simple PD-based joint trajectory tracking example controller.
         </description>
     </class>
+    <class name="franka_example_controllers/DualWaypointStepController"
+           type="franka_example_controllers::DualWaypointStepController" base_class_type="controller_interface::ControllerInterface">
+        <description>
+            A simple controller that moves the robot between two waypoints in a step-like manner.
+        </description>
+    </class>
+    <class name="franka_example_controllers/SimpleJointPositionController"
+           type="franka_example_controllers::SimpleJointPositionController" base_class_type="controller_interface::ControllerInterface">
+        <description>
+            A simple controller that moves the robot between two waypoints in a step-like manner.
+        </description>
+    </class>
+    <class name="franka_example_controllers/SimpleCartesianPositionController"
+           type="franka_example_controllers::SimpleCartesianPositionController" base_class_type="controller_interface::ControllerInterface">
+        <description>
+            A simple controller that moves the robot between two waypoints in a step-like manner.
+        </description>
+    </class>
+    <class name="franka_example_controllers/SimpleCartesianVelocityController"
+           type="franka_example_controllers::SimpleCartesianVelocityController" base_class_type="controller_interface::ControllerInterface">
+        <description>
+            A simple controller that moves the robot between two waypoints in a step-like manner.
+        </description>
+    </class>
 </library>
