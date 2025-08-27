@@ -55,6 +55,7 @@ add_library(
         src/simple_cartesian_position_controller.cpp
         src/simple_cartesian_velocity_controller.cpp
         src/combined_joint_cartesian_controller.cpp
+        src/accurate_cartesian_velocity_controller.cpp
         )
 target_include_directories(
         ${PROJECT_NAME}

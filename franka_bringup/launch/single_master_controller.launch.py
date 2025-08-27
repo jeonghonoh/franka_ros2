@@ -1,35 +1,24 @@
-#  Copyright (c) 2024 Franka Robotics GmbH
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
-
+import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch_ros.actions import Node
+from launch_ros.actions import Node, PushRosNamespace
 from launch_ros.substitutions import FindPackageShare
-
+from launch.actions import GroupAction
+from launch.substitutions import TextSubstitution
+from launch.conditions import IfCondition, UnlessCondition
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-    robot_ip_parameter_name = 'robot_ip'
+    robot_ip_parameter_name_03 = 'robot_ip'    
     arm_id_parameter_name = 'arm_id'
     load_gripper_parameter_name = 'load_gripper'
     use_fake_hardware_parameter_name = 'use_fake_hardware'
     fake_sensor_commands_parameter_name = 'fake_sensor_commands'
     use_rviz_parameter_name = 'use_rviz'
 
-    robot_ip = LaunchConfiguration(robot_ip_parameter_name)
+    robot_ip = LaunchConfiguration(robot_ip_parameter_name_03)
     arm_id = LaunchConfiguration(arm_id_parameter_name)
     load_gripper = LaunchConfiguration(load_gripper_parameter_name)
     use_fake_hardware = LaunchConfiguration(use_fake_hardware_parameter_name)
@@ -37,17 +26,48 @@ def generate_launch_description():
         fake_sensor_commands_parameter_name)
     use_rviz = LaunchConfiguration(use_rviz_parameter_name)
 
+    # 2a. gripper.launch.py에서 그리퍼 설정(YAML) 파일 경로 가져오기
+    gripper_config = os.path.join(
+        get_package_share_directory('franka_gripper'), 'config', 'franka_gripper_node.yaml'
+    )
+
+    # 2b. gripper.launch.py에서 'joint_names' 런치 아규먼트와 기본값 설정 가져오기
+    joint_names_parameter_name = 'joint_names'
+    default_joint_name_postfix = '_finger_joint'
+    arm_default_argument = [
+        '[',
+        arm_id,
+        default_joint_name_postfix,
+        '1',
+        ',',
+        arm_id,
+        default_joint_name_postfix,
+        '2',
+        ']',
+    ]
+    joint_names = LaunchConfiguration(joint_names_parameter_name)
+    
+    # 2c. gripper.launch.py에서 franka_gripper_node 정의 가져오기
+    gripper_node = Node(
+        package='franka_gripper',
+        executable='franka_gripper_node',
+        name=[arm_id, '_gripper'], # 노드 이름: fr3_gripper 또는 leftarm_gripper
+        parameters=[{'robot_ip': robot_ip, 'joint_names': joint_names}, gripper_config],
+        condition=UnlessCondition(use_fake_hardware)
+    )
+
     return LaunchDescription(
         [
             DeclareLaunchArgument(
-                robot_ip_parameter_name,
-                default_value='172.16.0.3',
+                robot_ip_parameter_name_03,
+                default_value='172.16.0.3', 
                 description='Hostname or IP address of the robot.'
             ),
             DeclareLaunchArgument(
                 arm_id_parameter_name,
                 default_value='fr3',
-                description='ID of the type of arm used. Supported values: fer, fr3, fp3'),
+                description='ID of the type of arm used. Supported values: fer, fr3, fp3'
+            ),
             DeclareLaunchArgument(
                 use_rviz_parameter_name,
                 default_value='false',
@@ -73,17 +93,22 @@ def generate_launch_description():
                     'without an end-effector.'
                 ),
             ),
+            DeclareLaunchArgument(
+                joint_names_parameter_name,
+                default_value=arm_default_argument,
+                description='Names of the gripper joints in the URDF',
+            ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     [
                         PathJoinSubstitution(
                             [FindPackageShare('franka_bringup'),
-                             'launch', 'franka.launch.py']
+                             'launch', 'single_franka.launch.py']
                         )
                     ]
                 ),
                 launch_arguments={
-                    robot_ip_parameter_name: robot_ip,
+                    robot_ip_parameter_name_03: robot_ip,
                     arm_id_parameter_name: arm_id,
                     load_gripper_parameter_name: load_gripper,
                     use_fake_hardware_parameter_name: use_fake_hardware,
@@ -91,11 +116,23 @@ def generate_launch_description():
                     use_rviz_parameter_name: use_rviz,
                 }.items(),
             ),
-            Node(
-                package='controller_manager',
-                executable='spawner',
-                arguments=['move_to_start_example_controller'],
-                output='screen',
+            GroupAction(
+                actions=[
+                    PushRosNamespace('leftarm'),
+                    Node(
+                        package='controller_manager',
+                        executable='spawner',
+                        arguments=['accurate_cartesian_velocity_controller', '--inactive'],
+                        output='screen',
+                    ),
+                    Node(
+                        package='controller_manager',
+                        executable='spawner',
+                        arguments=['simple_joint_position_controller'],
+                        output='screen',
+                    ),
+                ]
             ),
+            gripper_node,
         ]
     )

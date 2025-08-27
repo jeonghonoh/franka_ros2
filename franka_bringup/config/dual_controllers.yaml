@@ -337,6 +337,9 @@ leftarm:
 
       combined_joint_cartesian_controller:
         type: franka_example_controllers/CombinedJointCartesianController
+      
+      accurate_cartesian_velocity_controller:
+        type: franka_example_controllers/AccurateCartesianVelocityController
 
   joint_impedance_with_ik_example_controller:
     ros__parameters:
@@ -530,3 +533,14 @@ leftarm:
       d_gains: [50.0, 50.0, 50.0, 50.0, 30.0, 25.0, 15.0]
       cartesian_command_topic: "/leftarm/cartesian_pose_command"
       p_gain: 0.5
+  
+  accurate_cartesian_velocity_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      cartesian_command_topic: "/leftarm/cartesian_pose_command"
+      p_gain: 0.5
+      d_gain_linear: 0.1
+      d_gain_angular: 0.1
+      vel_limit_linear: 0.2
+      vel_limit_angular: 1.0
+      vel_filter_tau: 0.02
